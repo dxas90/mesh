@@ -95,6 +95,7 @@ sources:
 4. **Prefix collisions**: If adding new service, ensure prefix doesn't conflict (current: go_, python_, rust_)
 5. **pnpm lockfile**: Both CI workflows and local dev use pnpm with frozen lockfile - never commit package-lock.json
 6. **Missing transform package**: The `prefix` transform requires `@graphql-mesh/transform-prefix` dependency - ensure it's in package.json
+7. **GitHub Actions step order**: MUST install pnpm BEFORE Node.js setup when using `cache: "pnpm"` - otherwise cache lookup fails
 
 ## Quick Reference: Key Files
 
