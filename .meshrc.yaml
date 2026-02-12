@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://unpkg.com/@graphql-mesh/types@0.104.18/esm/config-schema.json
+# GraphQL Mesh Configuration
+# Replaces Python BFF-Web with unified GraphQL gateway
+
+sources:
+  - name: LearnGo
+    handler:
+      openapi:
+        source: "http://learn-go:8001/openapi.json"
+        endpoint: "http://learn-go:8001"
+        operationHeaders:
+          x-user-id: "{context.headers.x-user-id}"
+          x-service: "learn-go"
+    transforms:
+      - prefix:
+          value: "go_"
+          includeRootOperations: true
+
+  - name: LearnPython
+    handler:
+      openapi:
+        source: "http://learn-python:8000/openapi.json"
+        endpoint: "http://learn-python:8000"
+        operationHeaders:
+          x-user-id: "{context.headers.x-user-id}"
+          x-service: "learn-python"
+    transforms:
+      - prefix:
+          value: "python_"
+          includeRootOperations: true
+
+  - name: LearnRust
+    handler:
+      openapi:
+        source: "http://learn-rust:8080/openapi.json"
+        endpoint: "http://learn-rust:8080"
+        operationHeaders:
+          x-user-id: "{context.headers.x-user-id}"
+          x-service: "learn-rust"
+    transforms:
+      - prefix:
+          value: "rust_"
+          includeRootOperations: true
+
+# Cache configuration (Redis)
+cache:
+  redis:
+    url: ${REDIS_URL:redis://localhost:6379/0}
+
+# Server configuration
+serve:
+  port: 8080
+  endpoint: /graphql
+  playground: true
+  cors:
+    origin: "${env.CORS_ORIGINS:*}"
+    credentials: true

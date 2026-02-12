@@ -1,0 +1,17 @@
+{{- if .Capabilities.APIVersions.Has "postgresql.cnpg.io/v1/Database"}}
+{{- if .Values.database.enabled }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: {{ include "base.fullname" . }}-database
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "base.labels" . | nindent 4 }}
+spec:
+  name: {{ .Values.database.name | default "mesh" }}
+  owner: {{ .Values.database.owner | default "app" }}
+  cluster:
+    name: {{ .Values.database.clusterName | default "postgres" }}
+{{- end }}
+{{- end }}

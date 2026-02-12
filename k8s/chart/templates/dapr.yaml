@@ -1,0 +1,16 @@
+{{- if .Values.dapr.enabled }}
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: {{ include "base.fullname" . }}-dapr-config
+spec:
+  tracing:
+    samplingRate: "1"
+    otel:
+        endpointAddress: "tempo.observability.svc.cluster.local:4317"
+        protocol: "grpc"
+        isSecure: false
+  metrics:
+    enabled: true
+{{- end }}

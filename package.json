@@ -1,0 +1,65 @@
+{
+  "name": "@learns/mesh",
+  "version": "1.0.0",
+  "description": "GraphQL Mesh gateway aggregating learn-go, learn-python, and learn-rust microservices",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "mesh dev",
+    "build": "mesh build",
+    "start": "node dist/index.js",
+    "validate": "mesh validate",
+    "generate": "mesh generate",
+    "supergraph": "mesh compose",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "graphql",
+    "mesh",
+    "bff",
+    "gateway",
+    "microservices",
+    "learn-go",
+    "learn-python",
+    "learn-rust"
+  ],
+  "author": "Daniel Ramirez <dxas90@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@graphql-mesh/cache-redis": "^0.105.4",
+    "@graphql-mesh/cli": "^0.100.16",
+    "@graphql-mesh/graphql": "^0.104.15",
+    "@graphql-mesh/grpc": "^0.108.16",
+    "@graphql-mesh/merger-stitching": "^0.105.0",
+    "@graphql-mesh/openapi": "^0.109.22",
+    "@graphql-mesh/plugin-response-cache": "^0.104.20",
+    "@graphql-mesh/runtime": "^0.106.0",
+    "@graphql-mesh/store": "^0.104.19",
+    "@graphql-mesh/transform-filter-schema": "^0.104.15",
+    "@graphql-mesh/transform-rename": "^0.105.16",
+    "@graphql-mesh/types": "^0.104.18",
+    "@graphql-mesh/utils": "^0.104.18",
+    "@graphql-tools/delegate": "^12.0.0",
+    "@graphql-tools/stitch": "^10.0.0",
+    "@graphql-tools/utils": "^11.0.0",
+    "graphql": "^16.9.0",
+    "dotenv": "^17.0.0",
+    "ioredis": "^5.4.1",
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.28.0"
+}

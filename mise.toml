@@ -1,0 +1,13 @@
+[tools]
+pnpm = "latest"
+node = "24"
+age = "latest"
+kubectl = "latest"
+sops = "latest"
+task = "latest"
+
+[settings]
+experimental = true
+
+[env]
+PROJECT_NAME = "{{ config_root | basename }}"

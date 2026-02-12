@@ -1,0 +1,39 @@
+# ignore .git and .cache folder and directories
+.cache
+.github/
+.mesh/
+
+# ignore markdown files except README.md (needed for package metadata)
+*.md
+
+# ignore performance tests
+performance-tests
+
+# ignore docker compose
+docker-compose.yml
+
+*.log
+
+# kubernetes files
+k8s/
+
+# ignore test files and databases
+tests/
+*.db
+*.db-*
+.pytest_cache/
+
+# ignore development files
+docs/
+.env.example
+mise.toml
+renovate.json5
+uv.lock
+!README.md
+
+node_modules
+.git
+.gitignore
+Dockerfile
+.env
+.cache
