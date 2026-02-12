@@ -1,11 +1,11 @@
 ---
-    name: Build and Test a NPM Package
+    name: Validate Mesh Configuration on PR
     on:
       pull_request:
         branches: [ main ]
     jobs:
-      lint:
-        name: Code Quality & Linting
+      validate:
+        name: Validate Mesh Configuration
         runs-on: ubuntu-latest
         steps:
           - name: Checkout code
@@ -23,12 +23,11 @@
           - name: Install dependencies
             run: pnpm install --frozen-lockfile
 
-          - name: Check formatting
-            run: pnpm exec prettier --check "src/**/*.ts"
-            continue-on-error: true
+          - name: Build and validate mesh configuration
+            run: pnpm build
 
       test:
-        name: Run Tests
+        name: Build Mesh Gateway
         runs-on: ubuntu-latest
         strategy:
           matrix:
@@ -48,6 +47,9 @@
 
           - name: Install dependencies
             run: pnpm install --frozen-lockfile
+
+          - name: Build GraphQL Mesh
+            run: pnpm build
 
       security-scan:
         name: Security Vulnerability Scan

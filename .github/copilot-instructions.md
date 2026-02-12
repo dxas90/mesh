@@ -1,7 +1,7 @@
 # AI Coding Agent Instructions for mesh
 
 ## Project Overview
-GraphQL Mesh-based API gateway that declaratively aggregates learn-go (port 8001), learn-python (port 8000), and learn-rust (port 8080) microservices into a unified GraphQL API. **Configuration-driven architecture** - no custom TypeScript code, only `.meshrc.yaml` configuration.
+GraphQL Mesh-based API gateway that declaratively aggregates learn-go (port 8001), learn-python (port 8000), and learn-rust (port 8080) microservices into a unified GraphQL API. **Configuration-driven architecture** - no custom TypeScript code, ONLY `.meshrc.yaml` configuration file defines all behavior.
 
 ## Architecture & Core Concepts
 
@@ -22,7 +22,7 @@ GraphQL Mesh-based API gateway that declaratively aggregates learn-go (port 8001
 - **Docker multi-stage**: Node.js 24-alpine → pnpm install → runtime with `pnpm mesh build && pnpm mesh start`
 - **Critical Docker detail**: `.mesh/` directory mounted as emptyDir in K8s to avoid permission conflicts (see Dockerfile comment line 36)
 - **Generated artifacts**: GraphQL Mesh generates schema and runtime code into `.mesh/` (git-ignored)
-- **Package manager**: pnpm (v10.28.0) via corepack - NEVER use npm/yarn commands
+- **Package manager**: pnpm (v10.28.0) via corepack - ALWAYS use pnpm (both local dev and CI)
 
 ## Critical Developer Workflows
 
@@ -30,7 +30,7 @@ GraphQL Mesh-based API gateway that declaratively aggregates learn-go (port 8001
 ```bash
 pnpm install              # Install dependencies (uses frozen lockfile)
 pnpm dev                  # Start dev server with hot reload on :8080
-pnpm validate             # Validate .meshrc.yaml configuration
+pnpm build                # Build and validate .meshrc.yaml configuration
 ```
 
 **Testing backend connectivity:**
@@ -46,13 +46,13 @@ curl http://localhost:8080/openapi.json  # learn-rust
 2. Add prefix transform to avoid naming conflicts (e.g., `newservice_`)
 3. Configure `operationHeaders` to forward authentication
 4. Update `k8s/chart/values.yaml` extraEnv with service URL
-5. Run `pnpm validate` to verify configuration
+5. Run `pnpm build` to validate configuration
 6. Update `.env.example` with new SERVICE_URL variable
 
 ### CI/CD Pipeline Structure
-1. **lint** → TypeScript type-check + ESLint (minimal checks - no custom code)
-2. **test** → Matrix (Node 20/22/24) with coverage upload
-3. **security-scan** → npm audit for dependency vulnerabilities
+1. **lint** → Builds mesh to validate `.meshrc.yaml` configuration
+2. **test** → Matrix (Node 20/22/24) builds mesh gateway with `pnpm build`
+3. **security-scan** → pnpm audit for dependency vulnerabilities
 4. **helm-test** → helm-unittest + helm lint on `k8s/chart/`
 5. **build** → Multi-arch Docker image (amd64/arm64) pushed to ghcr.io
 
@@ -93,7 +93,8 @@ sources:
 2. **OpenAPI spec changes**: Mesh caches schema - restart dev server after backend API changes
 3. **Permission errors**: If `.mesh/` exists before Docker build, K8s emptyDir mount fails - Dockerfile intentionally omits creating this directory
 4. **Prefix collisions**: If adding new service, ensure prefix doesn't conflict (current: go_, python_, rust_)
-5. **npm vs pnpm**: CI uses `npm ci` for compatibility, but local dev MUST use `pnpm` (specified in package.json packageManager field)
+5. **pnpm lockfile**: Both CI workflows and local dev use pnpm with frozen lockfile - never commit package-lock.json
+6. **Missing transform package**: The `prefix` transform requires `@graphql-mesh/transform-prefix` dependency - ensure it's in package.json
 
 ## Quick Reference: Key Files
 
@@ -107,7 +108,9 @@ sources:
 
 **Testing patterns:**
 - `k8s/chart/tests/*.yaml` - helm-unittest suites using `set:` and `asserts:` patterns
-- No unit tests - gateway behavior tested via helm tests and integration smoke tests
+- No unit/integration tests - this is a configuration-only gateway (no custom resolvers)
+- Config validation via `pnpm build` (validates `.meshrc.yaml` syntax and generates artifacts)
+- Note: `pnpm validate` requires built artifacts - use `pnpm build` for validation
 
 ## GraphQL Playground Usage
 

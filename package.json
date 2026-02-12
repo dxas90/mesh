@@ -7,13 +7,9 @@
   "scripts": {
     "dev": "mesh dev",
     "build": "mesh build",
-    "start": "node dist/index.js",
-    "validate": "mesh validate",
+    "start": "mesh start",
     "generate": "mesh generate",
-    "supergraph": "mesh compose",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint src --ext .ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "supergraph": "mesh compose"
   },
   "keywords": [
     "graphql",
@@ -38,6 +34,7 @@
     "@graphql-mesh/runtime": "^0.106.0",
     "@graphql-mesh/store": "^0.104.19",
     "@graphql-mesh/transform-filter-schema": "^0.104.15",
+    "@graphql-mesh/transform-prefix": "^0.105.16",
     "@graphql-mesh/transform-rename": "^0.105.16",
     "@graphql-mesh/types": "^0.104.18",
     "@graphql-mesh/utils": "^0.104.18",
