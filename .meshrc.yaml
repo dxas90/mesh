@@ -7,8 +7,8 @@ sources:
   - name: LearnGo
     handler:
       openapi:
-        source: "http://learn-go:8001/openapi.json"
-        endpoint: "http://learn-go:8001"
+        source: "${LEARN_GO_SERVICE_URL}/openapi.json"
+        endpoint: "${LEARN_GO_SERVICE_URL}"
         operationHeaders:
           x-user-id: "{context.headers.x-user-id}"
           x-service: "learn-go"
@@ -20,8 +20,8 @@ sources:
   - name: LearnPython
     handler:
       openapi:
-        source: "http://learn-python:8000/openapi.json"
-        endpoint: "http://learn-python:8000"
+        source: "${LEARN_PYTHON_SERVICE_URL}/openapi.json"
+        endpoint: "${LEARN_PYTHON_SERVICE_URL}"
         operationHeaders:
           x-user-id: "{context.headers.x-user-id}"
           x-service: "learn-python"
@@ -33,8 +33,8 @@ sources:
   - name: LearnRust
     handler:
       openapi:
-        source: "http://learn-rust:8080/openapi.json"
-        endpoint: "http://learn-rust:8080"
+        source: "${LEARN_RUST_SERVICE_URL}/openapi.json"
+        endpoint: "${LEARN_RUST_SERVICE_URL}"
         operationHeaders:
           x-user-id: "{context.headers.x-user-id}"
           x-service: "learn-rust"
